@@ -2,7 +2,7 @@ package com.day4;
 
 import java.util.Scanner;
 
-class Line {
+class Line implements Comparable<Line> {
     private double x1, y1, x2, y2;
 
     public Line(double x1, double y1, double x2, double y2) {
@@ -17,15 +17,14 @@ class Line {
         return Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     }
 
-    // Override equals method to check equality of two lines based on length
+    // Override compareTo method to compare two lines based on length
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+    public int compareTo(Line otherLine) {
+        double thisLength = this.calculateLength();
+        double otherLength = otherLine.calculateLength();
 
-        Line otherLine = (Line) obj;
-        double epsilon = 1e-8; // A small value to handle precision issues with doubles
-        return Math.abs(this.calculateLength() - otherLine.calculateLength()) < epsilon;
+        // Compare lengths and return the result
+        return Double.compare(thisLength, otherLength);
     }
 }
 
@@ -60,12 +59,18 @@ public class lineComparision {
         // Calculate and display the length of Line 2
         System.out.println("Length of Line 2: " + line2.calculateLength());
 
-        // Check equality of two lines based on length
-        if (line1.equals(line2)) {
+        // Compare two lines based on length
+        int comparisonResult = line1.compareTo(line2);
+
+        // Display the comparison result
+        if (comparisonResult == 0) {
             System.out.println("Both lines are equal.");
+        } else if (comparisonResult > 0) {
+            System.out.println("Line 1 is greater than Line 2.");
         } else {
-            System.out.println("Lines are not equal.");
+            System.out.println("Line 2 is greater than Line 1.");
         }
+
     }
 
     /*
